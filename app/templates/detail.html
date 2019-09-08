@@ -1,0 +1,66 @@
+{%extends "base.html"%}
+{% load static %}
+
+
+{%block title%}Simple Detail {%endblock%}
+
+
+{%block body%}
+	{%if store.image%}      <!-- if image available display it else display default image -->
+		<img src={{store.image.url}} alt="store image">
+	{%else%}
+		<img src="{%static 'default.png'%}" alt="default image">
+	{%endif%} 
+
+		<ul>
+			<li>Name: {{store.name|upper}}</li>   <!-- pipe used to insert django template filters -->
+			<li>Location: {{store.location}}</li>
+			<li>Description: {{store.description}}</li>
+			<li>Cuisine: {{store.category}}</li>
+		</ul>
+
+		{%if request.user == store.owner%}    <!-- permission: display buttons for owner only -->
+			<a href = "{%url 'app:update' store.slug%}" > <button> UPDATE </button> </a>
+			<a href = "{%url 'app:delete' store.slug%}" > <button> DELETE </button> </a>
+			<a href = "{%url 'app:item-create' store.slug%}" > <button> CREATE ITEM </button> </a>
+		{%endif%}
+
+
+
+
+	{%for item in store.items.all%}
+
+	<div class="col-12 col-xl-3 col-lg-4 col-md-6"> <!-- start of column after for loop -->
+
+
+	{%if item.image%}      <!-- if image available display it else display default image -->
+		<img src={{item.image.url}} alt="item image">
+	{%else%}
+		<img src="{%static 'default.png'%}" alt="default image">
+	{%endif%} 
+
+
+	{%if request.user == store.owner%}    <!-- permission: display buttons for owner only -->
+	<ul>
+		<li>{{item.name}} -  {{item.price}} </li>
+		<!-- price_range is a method if used in views or model obj.price_range() -->
+		<li>{{item.price_range}}</li>  
+		<a href = "{%url 'app:item-update' item.slug%}" > <button> UPDATE </button> </a>
+		<a href = "{%url 'app:item-delete' item.slug%}" > <button> DELETE </button> </a>
+	</ul>
+	{%endif%}
+
+
+	</div> <!-- end of column -->
+
+
+	{%endfor%}
+
+	</div> <!-- end of row -->
+	
+
+
+
+
+{%endblock%}
+

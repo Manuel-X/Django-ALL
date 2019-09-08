@@ -1,0 +1,48 @@
+{%extends "base.html"%}
+{% load static %}       <!-- static should be loaded in sheet if used in it-->
+
+{%block title%} Store List {%endblock%}
+
+{%block body%}
+
+	<!-- bootdtrap grid system consisting of rows and columns -->
+	<div class="row">   <!-- start of row before for loop-->  
+
+	{%for store in stores%}
+
+	<div class="col-12 col-xl-3 col-lg-4 col-md-6"> <!-- start of column after for loop -->
+
+
+	{%if store.image%}      <!-- if image available display it else display default image -->
+		<img src={{store.image.url}} alt="store image">
+	{%else%}
+		<img src="{%static 'default.png'%}" alt="default image">
+	{%endif%} 
+
+
+
+	<ul>
+		<!-- using absolute url to hyperlink store to its detail page -->
+		<!-- cleaner as url name is only written in get_absolute_url function in Store model -->
+		<li><a href = "{{store.get_absolute_url}}" >{{store.name}}</a> -  {{store.location}} </li>
+
+
+		<!-- OR -->
+
+		<!-- using url tag to hyperlink store to its detail page -->
+		<!-- if url name changed in urls file it should be changed in all url tags -->
+		<li><a href = "{%url 'app:detail' store.slug%}" >{{store.name}}</a> -  {{store.location}} </li>
+		{%if request.user == store.owner%}    <!-- permission: display buttons for owner only -->
+		<a href = "{%url 'app:update' store.slug%}" > <button> UPDATE </button> </a>
+		<a href = "{%url 'app:delete' store.slug%}" > <button> DELETE </button> </a>
+		{%endif%}
+	</ul>
+
+	</div> <!-- end of column -->
+
+	{%endfor%}
+
+	</div> <!-- end of row -->
+
+{%endblock%}
+

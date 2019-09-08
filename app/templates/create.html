@@ -1,0 +1,16 @@
+{%extends "base.html"%}
+{% load crispy_forms_tags%} <!-- crispy forms loaded--> 
+{%block title%} Create Store {%endblock%}
+
+
+{%block body%}
+	
+	<div class = "jumbotron">   <!-- jumbotron form container-->
+	<form method = "POST" action = "{% url 'app:create' %}" enctype="multipart/form-data">
+	{%csrf_token%}
+	{{form|crispy}}
+	<input type="submit" value="Create Store">
+	</form>
+	</div>  <!-- end of jumbotron -->
+
+{%endblock%}

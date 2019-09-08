@@ -1,0 +1,15 @@
+{%extends "base.html"%}
+{% load crispy_forms_tags%} <!-- crispy forms loaded--> 
+{%block title%}Update Item {%endblock%}
+
+{%block body%}
+
+	<div class = "jumbotron">   <!-- jumbotron form container-->
+		<form method = "POST" action = "{% url 'app:item-update' item.slug %}" enctype="multipart/form-data">
+		{%csrf_token%}
+		{{form|crispy}}
+		<input type="submit" value="Update Item">
+		</form>
+	</div>                      <!-- end of jumbotron form -->
+
+{%endblock%}
